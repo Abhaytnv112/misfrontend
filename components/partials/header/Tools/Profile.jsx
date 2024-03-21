@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "@/components/partials/auth/store";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const ProfileLabel = () => {
   return (
@@ -33,7 +34,32 @@ const ProfileLabel = () => {
 const Profile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const handleLogoutClick = async () => {
+    try {
+      await dispatch(handleLogout(false));
+      toast.success("Successfully Login", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error("An error occurred while navigating to the home page. Please try again.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   const ProfileMenu = [
     {
       label: "Profile",
@@ -88,9 +114,7 @@ const Profile = () => {
     {
       label: "Logout",
       icon: "heroicons-outline:login",
-      action: () => {
-        dispatch(handleLogout(false));
-      },
+      action: handleLogoutClick,
     },
   ];
 

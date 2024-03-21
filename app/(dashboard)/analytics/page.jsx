@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@/components/ui/Card";
 import ImageBlock1 from "@/components/partials/widget/block/image-block-1";
 import GroupChart1 from "@/components/partials/widget/chart/group-chart-1";
@@ -11,6 +11,12 @@ import CompanyTable from "@/components/partials/table/company-table";
 import RecentActivity from "@/components/partials/widget/recent-activity";
 import RadarChart from "@/components/partials/widget/chart/radar-chart";
 import HomeBredCurbs from "@/components/partials/HomeBredCurbs";
+import useAuth from "@/hooks/useAuth";
+import useRole from "@/hooks/useRole";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import withAuthRole from "@/hoc/withAuthRole";
+
 
 const MostSales = dynamic(
   () => import("@/components/partials/widget/most-sales"),
@@ -20,6 +26,16 @@ const MostSales = dynamic(
 );
 const Dashboard = () => {
   const [filterMap, setFilterMap] = useState("usa");
+  const isAuth = useAuth();
+  const role = useRole();
+  const router = useRouter();
+  console.log(isAuth,role,'isAuth')
+  // useEffect(()=>{
+  //   if(!isAuth && !role === "Admin"){
+  //     router.push("/");
+  //   }
+  // },[isAuth])
+ 
   return (
     <div>
       <HomeBredCurbs title="Dashboard" />
@@ -135,4 +151,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withAuthRole('Admin')(Dashboard);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@/components/ui/Card";
 import ImageBlock2 from "@/components/partials/widget/block/image-block-2";
 import GroupChart2 from "@/components/partials/widget/chart/group-chart-2";
@@ -16,9 +16,22 @@ import VisitorRadar from "@/components/partials/widget/chart/visitor-radar";
 import MostSales2 from "@/components/partials/widget/most-sales2";
 import Products from "@/components/partials/widget/products";
 import HomeBredCurbs from "@/components/partials/HomeBredCurbs";
+import useAuth from "@/hooks/useAuth";
+import useRole from "@/hooks/useRole";
+import { useRouter } from "next/navigation";
+import withAuthRole from "@/hoc/withAuthRole";
 
 const Ecommerce = () => {
+
+  const isAuth = useAuth();
+  const role = useRole();
+  const router = useRouter();
   const [filterMap, setFilterMap] = useState("usa");
+  // useEffect(()=>{
+  //   if(isAuth || role === "User"){
+  //     router.push("/analytics");
+  //   }
+  // },[isAuth])
   return (
     <div>
       <HomeBredCurbs title="Ecommerce" />
@@ -116,4 +129,4 @@ const Ecommerce = () => {
   );
 };
 
-export default Ecommerce;
+export default withAuthRole('User')(Ecommerce);

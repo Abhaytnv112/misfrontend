@@ -3,11 +3,24 @@ import Link from "next/link";
 import LoginForm from "@/components/partials/auth/login-form";
 import Social from "@/components/partials/auth/social";
 import useDarkMode from "@/hooks/useDarkMode";
+import { useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 // image import
 
 const Login = () => {
   const [isDark] = useDarkMode();
+  const isAuth = useAuth();
+  const router = useRouter();
+  console.log(isAuth,'isAuth')
+  useEffect(()=>{
+    if(isAuth){
+      router.push("/analytics");
+    }else{
+      router.push("/");
+    }
+  },[isAuth])
   return (
     <>
       <div className="loginwrapper">
